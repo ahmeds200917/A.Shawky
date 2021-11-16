@@ -153,8 +153,8 @@ case $opt in
         ;;
     "4") EMU=oscam-gosatplus removeoscam
         echo "Insallling oscam-gosatplus plugin Please Wait ......"
-        wget $MY_URL/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
+        wget $MY_URL/${OSC_PACKAGE}-oscam-gosatplus_${OSC_VERSION}_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-oscam-gosatplus_${OSC_VERSION}_all.ipk
         ;;
     "5") EMU=SoftCam_Online
         rm -rf $SOFTPATH
@@ -164,8 +164,8 @@ case $opt in
         ;;
     "6") EMU=ncam-gosatplus removeoscam
         echo "Insallling ncam-gosatplus plugin Please Wait ......"
-        wget $MY_URL/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
+        wget $MY_URL/${OSC_PACKAGE}-ncam-gosatplus_${OSC_VERSION}_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-ncam-gosatplus_${OSC_VERSION}_all.ipk
         ;;
     x)
         clear
