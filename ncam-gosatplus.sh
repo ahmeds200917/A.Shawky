@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL ncam-gosatplus
 # ###########################################
 #
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh -q; sh installer.sh
+# Command: wget https://github.com/ahmeds200917/A.Shawky/blob/main/ncam-gosatplus.sh -q; sh installer.sh
 #
 # ###########################################
 
