@@ -18,7 +18,7 @@ OSC_VERSION='11.703-emu-r798'
 NCM_VERSION='V12.4-r0'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam'
 NCM_PACKAGE='enigma2-plugin-softcams-ncam'
-MY_URL='https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-softcams-ncam-gosatplus_1.0_all.ipk'
+MY_URL='https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-softcams-ncam-supcam_12.4_all.ipk'
 
 ####################
 #  Image Checking  #
