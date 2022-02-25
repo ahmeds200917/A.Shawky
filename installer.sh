@@ -1,14 +1,17 @@
 #!/bin/sh # 
  # # Command: wget https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/ArabicSavior-1.4.tar.gz -O - | /bin/sh # # ########################################### ###########################################  
-MY_URL="https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/ArabicSavior-1.4.tar.gz"  
+MY_URL="https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/ArabicSavior-1.4.zip"  
 echo "******************************************************************************************************************"
-echo "download and install ArabicSavior-1.4 mora"
+# remove old version
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/ArabicSavior
+
+echo "download and install ArabicSavior-1.4-mora"
 echo "============================================================================================================================="
 
 #####################################################################################
 echo " download and install ArabicSavior-1.4   "
 cd /tmp
-wget  "https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/ArabicSavior-1.4.tar.gz"
+wget  "https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/ArabicSavior-1.4.zip"
 wait
 echo " ArabicSavior-1.4 "
 tar -xzf ArabicSavior-1.4.tar.gz  -C /
