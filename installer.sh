@@ -13,7 +13,7 @@ echo " download and install ArabicSavior-1.4   "
 cd /tmp
 wget  "https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/ArabicSavior-1.4-2.tar.gz"
 wait
-echo " ArabicSavior-1.4 "
+echo " ArabicSavior-1.4 Mora"
 tar -xzf ArabicSavior-1.4-2.tar.gz  -C /
 wait
 sleep 2;
