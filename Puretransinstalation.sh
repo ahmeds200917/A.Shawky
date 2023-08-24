@@ -1,5 +1,5 @@
-#!/bin/sh
-#
+#!/bin/bash
+
 
 wget -O /tmp/pure2trans.tar.gz "https://github.com/ahmeds200917/A.Shawky/blob/main/pure2trans.tar.gz"
 
