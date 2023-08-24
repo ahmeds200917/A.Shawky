@@ -1,9 +1,9 @@
 #!/bin/bash
 
-cd /tmp
-set -e
-rm -rf *Puretransinstalation* > /dev/null 2>&1
-wget https://github.com/ahmeds200917/A.Shawky/blob/main/Puretransinstalation.sh
+
+
+wget -O /tmp/pure2trans.tar.gz "https://github.com/ahmeds200917/A.Shawky/blob/main/pure2trans.tar.gz"
+
 tar -xzf /tmp/*.tar.gz -C /
 
 wait
@@ -26,6 +26,13 @@ echo "#########################################################"
 sleep 3
 killall enigma2
 exit 0
+
+
+
+
+
+
+
 
 
 
