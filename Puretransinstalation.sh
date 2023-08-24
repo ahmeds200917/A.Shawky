@@ -1,6 +1,3 @@
-#!/bin/bash
-
-
 cd /tmp
 set -e
 rm -rf *Puretransinstalation* > /dev/null 2>&1
