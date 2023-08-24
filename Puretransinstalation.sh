@@ -4,13 +4,13 @@
  # # 
 cd /tmp
 set -e 
-wget "https://github.com/ahmeds200917/A.Shawky/blob/main/pure2trans.tar.gz"
+wget "https://github.com/ahmeds200917/A.Shawky/blob/main/pure2.tar.gz"
 wait
-tar -xzf pure2trans.tar.gz  -C /
+tar -xzf pure2.tar.gz  -C /
 wait
 cd ..
 set +e
-rm -f /tmp/pure2trans.tar.gz
+rm -f /tmp/pure2.tar.gz
 echo "     >>>> Add  Ahmed Shawky supported by Novaler team  "   
 sleep 4;                                                                                                                  
 echo ". >>>>         RESTARING     <<<<"
