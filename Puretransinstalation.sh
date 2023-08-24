@@ -2,7 +2,7 @@
 
 
 
-wget -O /tmp/pure2trans.tar.gz "https://raw.githubusercontent.com/ahmeds200917/A.Shawky/main/Puretransinstalation.sh"
+wget -O /tmp/pure2trans.tar.gz "https://github.com/ahmeds200917/A.Shawky/blob/main/pure2trans.tar.gz"
 
 tar -xzf /tmp/*.tar.gz -C /
 
