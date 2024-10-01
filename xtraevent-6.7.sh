@@ -2,7 +2,7 @@
 
 # Configuration
 plugin="xtraevent"
-version="6.7"
+version="6.78"
 targz_file="$plugin-$version.tar.gz"
 package="enigma2-plugin-extensions-xtraevent"
 temp_dir="/tmp"
