@@ -1,153 +1,74 @@
 #!/bin/sh
-
-# Configuration
-plugin="xtraevent"
-version="6.7"
-targz_file="$plugin-$version.tar.gz"
-package="enigma2-plugin-extensions-xtraevent"
-temp_dir="/tmp"
-url="https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.7.tar.gz"
-
-# Determine package manager
-if command -v dpkg &> /dev/null; then
-package_manager="apt"
-status_file="/var/lib/dpkg/status"
-uninstall_command="apt-get purge --auto-remove -y"
-else
-package_manager="opkg"
-status_file="/var/lib/opkg/status"
-uninstall_command="opkg remove --force-depends"
-fi
-
-check_and_remove_package() {
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent ]; then
-echo "> removing package old version please wait..."
-sleep 3
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent > /dev/null 2>&1
-rm -rf /usr/lib/enigma2/python/Components/Converter/xtra* > /dev/null 2>&1
-rm -rf /usr/lib/enigma2/python/Components/Renderer/xtra* > /dev/null 2>&1
-
-if grep -q "$package" "$status_file"; then
-echo "> Removing existing $package package, please wait..."
-$uninstall_command $package
-fi
-echo "*******************************************"
-echo "*             Removed Finished            *"
-echo "*            Uploaded By Eliesat          *"
-echo "*******************************************"
-sleep 3
-exit 1
-else
-echo " " 
-fi  }
-check_and_remove_package
-
-#check and install dependencies
-# Check python
-pyVersion=$(python -c"from sys import version_info; print(version_info[0])")
-
-deps=("unrar" "perl-module-io-zlib")
-
-if [ "$pyVersion" = 3 ]; then
-  deps+=( "python3-codecs" "python3-compression" "python3-core" "python3-difflib" "python3-json" "python3-requests" "python3-xmlrpc" )
-else
-deps+=( "python-codecs" "python-compression" "python-core" "python-difflib" "python-json" "python-requests" "python-xmlrpc" )
-fi
-
-left=">>>>"
-right="<<<<"
-LINE1="---------------------------------------------------------"
-LINE2="-------------------------------------------------------------------------------------"
-
-if [ -f /etc/opkg/opkg.conf ]; then
-  STATUS='/var/lib/opkg/status'
-  OSTYPE='Opensource'
-  OPKG='opkg update'
-  OPKGINSTAL='opkg install'
-elif [ -f /etc/apt/apt.conf ]; then
-  STATUS='/var/lib/dpkg/status'
-  OSTYPE='DreamOS'
-  OPKG='apt-get update'
-  OPKGINSTAL='apt-get install -y'
-fi
-
-install() {
-  if ! grep -qs "Package: $1" "$STATUS"; then
-    $OPKG >/dev/null 2>&1
-    rm -rf /run/opkg.lock
-    echo -e "> Need to install ${left} $1 ${right} please wait..."
-    echo "$LINE2"
-    sleep 0.8
-    echo
-    if [ "$OSTYPE" = "Opensource" ]; then
-      $OPKGINSTAL "$1"
-      sleep 1
-      clear
-    elif [ "$OSTYPE" = "DreamOS" ]; then
-      $OPKGINSTAL "$1" -y
-      sleep 1
-      clear
-    fi
-  fi
-}
-
-for i in "${deps[@]}"; do
-  install "$i"
-done
-
-#download & install package
-echo "> Downloading $plugin-$version package  please wait ..."
-sleep 3
-wget --show-progress -qO $temp_dir/$targz_file --no-check-certificate $url
-tar -xzf $temp_dir/$targz_file -C /
-extract=$?
-rm -rf $temp_dir/$targz_file >/dev/null 2>&1
+##setup command=wget -q "--no-check-certificate" https://github.com/popking159/ssupport/raw/main/subssupport-install.sh -O - | /bin/sh
 
 echo ''
-if [ $extract -eq 0 ]; then
-echo "> $plugin-$version package installed successfully"
+echo '************************************************************'
+echo "**                       STARTED                          **"
+echo '************************************************************'
+echo "**                  Uploaded by: AShawky                    **"
+echo "************************************************************"
+echo ''
+sleep 3s
+
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent ]; then
+echo "> removing package please wait..."
+sleep 3s 
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent > /dev/null 2>&1
+fi
+
+status='/var/lib/opkg/status'
+package='enigma2-plugin-extensions-xtraEvent'
+
+if grep -q $package $status; then
+opkg remove $package > /dev/null 2>&1
+fi
+
+sleep 3s
+
+echo "downloading xtraEvent..."
+wget -O  /var/volatile/tmp/xtraevent-6.78.tar.gz https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.78.tar.gz
+echo "Installing SubsSupport..."
+tar -xzf /var/volatile/tmp/xtraevent-6.78.tar.gz -C /
+rm -rf /var/volatile/tmp/xtraevent-6.78.tar.gz
+sync
+echo "#########################################################"
+echo "#########################################################"
+echo "Installing dependency files"
+opkg install python3-codecs" "python3-compression" "python3-core" "python3-difflib" "python3-json" "python3-requests" "python3-xmlrpc
+
+SETTINGS="/etc/enigma2/settings"
+echo "Adding new settings for xtraevent..."
+echo ""
+echo ">>>>>>>>>     RESTARTING     <<<<<<<<<"
+echo ""
+init 4
 sleep 3
+sed -i "/xtraevent/d" $SETTINGS
+{
+    echo "config.plugins.xtraEvent.apis=True"
+	echo "config.plugins.xtraEvent.deletFiles=False"
+	echo "config.plugins.xtraEvent.extra3=True"
+	echo "config.plugins.xtraEvent.FanartSearchType=movies"
+	echo "config.plugins.xtraEvent.loc=/media/hdd/"
+	echo "config.plugins.xtraEvent.searchMANUELnmbr=0"
+	echo "config.plugins.xtraEvent.searchNUMBER=8"
+	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
+	echo "config.plugins.xtraEvent.searchType=movie"
+	echo "config.plugins.xtraEvent.timerHour=2"
+	echo "config.plugins.xtraEvent.timerMod=Period"
+	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
+	echo "config.plugins.xtraEvent.tvdb=True"
+        echo "config.plugins.xtraEvent.tvdbAPI=a99d487bb3426e5f3a60dea6d3d3c7ef"
+	
+} >> $SETTINGS
 
-echo "> Setup the plugin..."
-# Configure ajpanel_settings
-touch "$temp_dir/temp_file"
-cat <<EOF > "$temp_dir/temp_file"
-config.plugins.xtraEvent.apis=True
-config.plugins.xtraEvent.deletFiles=False
-config.plugins.xtraEvent.extra3=True
-config.plugins.xtraEvent.FanartSearchType=movies
-config.plugins.xtraEvent.loc=/media/hdd/
-config.plugins.xtraEvent.searchMANUELnmbr=0
-config.plugins.xtraEvent.searchNUMBER=8
-config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8
-config.plugins.xtraEvent.searchType=movie
-config.plugins.xtraEvent.timerHour=2
-config.plugins.xtraEvent.timerMod=Period
-config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8
-config.plugins.xtraEvent.tvdb=True
-config.plugins.xtraEvent.tvdbAPI=a99d487bb3426e5f3a60dea6d3d3c7ef
-EOF
-
-# Update Enigma2 settings
-sed -i "/xtraEvent/d" /etc/enigma2/settings
-grep "config.plugins.xtraEvent.*" "$temp_dir/temp_file" >> /etc/enigma2/settings
-rm -rf "$temp_dir/temp_file" >/dev/null 2>&1
-
+# ============================================================================================================
 sleep 2
-echo "> Setup done..., Please wait enigma2 restarting..."
-sleep 1
-echo "> Uploaded By ElieSat"
-
-# Restart Enigma2 service or kill enigma2 based on the system
-if [ -f /etc/apt/apt.conf ]; then
-    sleep 2
-    systemctl restart enigma2
-else
-    sleep 2
-    killall -9 enigma2
-fi
-else
-echo "> $plugin-$version package installation failed"
-sleep 3
-fi
-    
+sync
+init 3
+echo "==================================================================="
+echo "===                          FINISHED                           ==="
+echo "                         Modded by AShawky                        ==="
+echo "==================================================================="
+sleep 2
+exit 0
