@@ -1,22 +1,23 @@
 #!/bin/sh
+##setup command=wget -q "--no-check-certificate" https://github.com/popking159/ssupport/raw/main/subssupport-install.sh -O - | /bin/sh
 
 echo ''
 echo '************************************************************'
 echo "**                       STARTED                          **"
 echo '************************************************************'
-echo "**                  Uploaded by: AShawky                    **"
+echo "**                  Uploaded by: MNASR                    **"
 echo "************************************************************"
 echo ''
 sleep 3s
 
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent]; then
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/SubsSupport ]; then
 echo "> removing package please wait..."
 sleep 3s 
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent> /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/SubsSupport > /dev/null 2>&1
 fi
 
 status='/var/lib/opkg/status'
-package='enigma2-plugin-extensions-xtraEvent'
+package='enigma2-plugin-extensions-subssupport'
 
 if grep -q $package $status; then
 opkg remove $package > /dev/null 2>&1
@@ -24,40 +25,43 @@ fi
 
 sleep 3s
 
-echo "downloading xtraEvent..."
-wget -O  /var/volatile/tmp/xtraevent-6.78.tar.gz https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.78.tar.gz
+echo "downloading SubsSupport..."
+wget -O  /var/volatile/tmp/SubsSupport.tar.gz https://github.com/popking159/ssupport/raw/main/SubsSupport.tar.gz
 echo "Installing SubsSupport..."
-tar -xzf /var/volatile/tmp/xtraevent-6.78.tar.gz -C /
-rm -rf /var/volatile/tmp/xtraevent-6.78.tar.gz
+tar -xzf /var/volatile/tmp/SubsSupport.tar.gz -C /
+rm -rf /var/volatile/tmp/SubsSupport.tar.gz
 sync
 echo "#########################################################"
 echo "#########################################################"
 echo "Installing dependency files"
-opkg install python3-codecs" "python3-compression" "python3-core" "python3-difflib" "python3-json" "python3-requests" "python3-xmlrpc
+opkg install python3-codecs python3-compression python3-core python3-difflib python3-json python3-requests python3-xmlrpc unrar
 
 SETTINGS="/etc/enigma2/settings"
-echo "Adding new settings for xtraevent..."
+echo "Adding new settings for subssupport..."
 echo ""
 echo ">>>>>>>>>     RESTARTING     <<<<<<<<<"
 echo ""
 init 4
 sleep 3
-sed -i "/xtraevent/d" $SETTINGS
+sed -i "/subtitlesSupport/d" $SETTINGS
 {
-    echo "config.plugins.xtraEvent.apis=True"
-	echo "config.plugins.xtraEvent.deletFiles=False"
-	echo "config.plugins.xtraEvent.extra3=True"
-	echo "config.plugins.xtraEvent.FanartSearchType=movies"
-	echo "config.plugins.xtraEvent.loc=/media/hdd/"
-	echo "config.plugins.xtraEvent.searchMANUELnmbr=0"
-	echo "config.plugins.xtraEvent.searchNUMBER=8"
-	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
-	echo "config.plugins.xtraEvent.searchType=movie"
-	echo "config.plugins.xtraEvent.timerHour=2"
-	echo "config.plugins.xtraEvent.timerMod=Period"
-	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
-	echo "config.plugins.xtraEvent.tvdb=True"
-        echo "config.plugins.xtraEvent.tvdbAPI=a99d487bb3426e5f3a60dea6d3d3c7ef"
+    echo "config.plugins.subtitlesSupport.encodingsGroup=Arabic"
+	echo "config.plugins.subtitlesSupport.external.font.size=52"
+	echo "config.plugins.subtitlesSupport.search.edna_cz.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.itasa.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.lang1=ar"
+	echo "config.plugins.subtitlesSupport.search.lang2=ar"
+	echo "config.plugins.subtitlesSupport.search.lang3=ar"
+	echo "config.plugins.subtitlesSupport.search.mysubs.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.opensubtitles.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.podnapisi.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.prijevodionline.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.serialzone_cz.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.subtitles_gr.enabled=False"
+        echo "config.plugins.subtitlesSupport.search.subdl_com.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.subtitlist.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.titlovi.enabled=False"
+	echo "config.plugins.subtitlesSupport.search.titulky_com.enabled=False"
 	
 } >> $SETTINGS
 
@@ -67,7 +71,7 @@ sync
 init 3
 echo "==================================================================="
 echo "===                          FINISHED                           ==="
-echo "                         Modded by AShawky                        ==="
+echo "                         Modded by MNASR                        ==="
 echo "==================================================================="
 sleep 2
 exit 0
