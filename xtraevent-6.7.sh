@@ -12,6 +12,7 @@ echo "old version is removed..."
 sleep 1
 if [ -f /tmp/xtraEvent.tar.gz ]; then
 	tar -xzf /tmp/xtraEvent.tar.gz -C /
+sleep 1
 
 
 echo "> Setup the plugin..."
