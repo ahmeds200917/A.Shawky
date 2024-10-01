@@ -2,13 +2,45 @@
 
 # Configuration
 plugin="xtraevent"
-version="6.78"
+version="6.7"
 targz_file="$plugin-$version.tar.gz"
 package="enigma2-plugin-extensions-xtraevent"
 temp_dir="/tmp"
-url="https://raw.githubusercontent.com/ahmeds200917/A.Shawky/refs/heads/main/xtraevent_6.78.tar.gz"
+url="https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.7.tar.gz"
 
+# Determine package manager
+if command -v dpkg &> /dev/null; then
+package_manager="apt"
+status_file="/var/lib/dpkg/status"
+uninstall_command="apt-get purge --auto-remove -y"
+else
+package_manager="opkg"
+status_file="/var/lib/opkg/status"
+uninstall_command="opkg remove --force-depends"
+fi
 
+check_and_remove_package() {
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent ]; then
+echo "> removing package old version please wait..."
+sleep 3
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Components/Converter/xtra* > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Components/Renderer/xtra* > /dev/null 2>&1
+
+if grep -q "$package" "$status_file"; then
+echo "> Removing existing $package package, please wait..."
+$uninstall_command $package
+fi
+echo "*******************************************"
+echo "*             Removed Finished            *"
+echo "*            Uploaded By Eliesat          *"
+echo "*******************************************"
+sleep 3
+exit 1
+else
+echo " " 
+fi  }
+check_and_remove_package
 
 #check and install dependencies
 # Check python
