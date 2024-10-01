@@ -9,27 +9,7 @@ echo "************************************************************"
 echo ''
 sleep 3s
 
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent]; then
-echo "> removing package please wait..."
-sleep 3s 
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent> /dev/null 2>&1
-fi
 
-status='/var/lib/opkg/status'
-package='enigma2-plugin-extensions-xtraEvent'
-
-if grep -q $package $status; then
-opkg remove $package > /dev/null 2>&1
-fi
-
-sleep 3s
-
-echo "downloading xtraEvent..."
-wget -O  /var/volatile/tmp/xtraevent-6.78.tar.gz https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.78.tar.gz
-echo "Installing xtraEvent..."
-tar -xzf /var/volatile/tmp/xtraevent-6.78.tar.gz -C /
-rm -rf /var/volatile/tmp/xtraevent-6.78.tar.gz
-sync
 echo "#########################################################"
 echo "#########################################################"
 echo "Installing dependency files"
