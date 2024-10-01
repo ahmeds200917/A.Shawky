@@ -13,8 +13,6 @@
 	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
 	echo "config.plugins.xtraEvent.tvdb=True"
         echo "config.plugins.xtraEvent.tvdbAPI=a99d487bb3426e5f3a60dea6d3d3c7ef"
-
- 
 #check and install dependencies
 # Check python
 pyVersion=$(python -c"from sys import version_info; print(version_info[0])")
