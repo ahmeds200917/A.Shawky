@@ -2,11 +2,11 @@
 
 # Configuration
 plugin="xtraevent"
-version="6.78"
+version="6.7"
 targz_file="$plugin-$version.tar.gz"
 package="enigma2-plugin-extensions-xtraevent"
 temp_dir="/tmp"
-wget -q https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.78.tar.gz -P /tmp
+url="https://gitlab.com/eliesat/extensions/-/raw/main/xtraevent/xtraevent-6.7.tar.gz"
 
 # Determine package manager
 if command -v dpkg &> /dev/null; then
