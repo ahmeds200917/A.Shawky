@@ -1,18 +1,47 @@
 #!/bin/sh
-    echo "config.plugins.xtraEvent.apis=True"
-	echo "config.plugins.xtraEvent.deletFiles=False"
-	echo "config.plugins.xtraEvent.extra3=True"
-	echo "config.plugins.xtraEvent.FanartSearchType=movies"
-	echo "config.plugins.xtraEvent.loc=/media/hdd/"
-	echo "config.plugins.xtraEvent.searchMANUELnmbr=0"
-	echo "config.plugins.xtraEvent.searchNUMBER=8"
-	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
-	echo "config.plugins.xtraEvent.searchType=movie"
-	echo "config.plugins.xtraEvent.timerHour=2"
-	echo "config.plugins.xtraEvent.timerMod=Period"
-	echo "config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8"
-	echo "config.plugins.xtraEvent.tvdb=True"
-        echo "config.plugins.xtraEvent.tvdbAPI=a99d487bb3426e5f3a60dea6d3d3c7ef"
+
+# Configuration
+plugin="xtraevent"
+version="6.7"
+targz_file="$plugin-$version.tar.gz"
+package="enigma2-plugin-extensions-xtraevent"
+temp_dir="/tmp"
+url="https://github.com/ahmeds200917/A.Shawky/raw/refs/heads/main/xtraevent_6.78.tar.gz"
+
+# Determine package manager
+if command -v dpkg &> /dev/null; then
+package_manager="apt"
+status_file="/var/lib/dpkg/status"
+uninstall_command="apt-get purge --auto-remove -y"
+else
+package_manager="opkg"
+status_file="/var/lib/opkg/status"
+uninstall_command="opkg remove --force-depends"
+fi
+
+check_and_remove_package() {
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent ]; then
+echo "> removing package old version please wait..."
+sleep 3
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Components/Converter/xtra* > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Components/Renderer/xtra* > /dev/null 2>&1
+
+if grep -q "$package" "$status_file"; then
+echo "> Removing existing $package package, please wait..."
+$uninstall_command $package
+fi
+echo "*******************************************"
+echo "*             Removed Finished            *"
+echo "*            Uploaded By ahmed shawky          *"
+echo "*******************************************"
+sleep 3
+exit 1
+else
+echo " " 
+fi  }
+check_and_remove_package
+
 #check and install dependencies
 # Check python
 pyVersion=$(python -c"from sys import version_info; print(version_info[0])")
@@ -54,3 +83,71 @@ install() {
       $OPKGINSTAL "$1"
       sleep 1
       clear
+    elif [ "$OSTYPE" = "DreamOS" ]; then
+      $OPKGINSTAL "$1" -y
+      sleep 1
+      clear
+    fi
+  fi
+}
+
+for i in "${deps[@]}"; do
+  install "$i"
+done
+
+#download & install package
+echo "> Downloading $plugin-$version package  please wait ..."
+sleep 3
+wget --show-progress -qO $temp_dir/$targz_file --no-check-certificate $url
+tar -xzf $temp_dir/$targz_file -C /
+extract=$?
+rm -rf $temp_dir/$targz_file >/dev/null 2>&1
+
+echo ''
+if [ $extract -eq 0 ]; then
+echo "> $plugin-$version package installed successfully"
+sleep 3
+
+echo "> Setup the plugin..."
+# Configure ajpanel_settings
+touch "$temp_dir/temp_file"
+cat <<EOF > "$temp_dir/temp_file"
+config.plugins.xtraEvent.apis=True
+config.plugins.xtraEvent.deletFiles=False
+config.plugins.xtraEvent.extra3=True
+config.plugins.xtraEvent.FanartSearchType=movies
+config.plugins.xtraEvent.loc=/media/hdd/
+config.plugins.xtraEvent.searchMANUELnmbr=0
+config.plugins.xtraEvent.searchNUMBER=8
+config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8
+config.plugins.xtraEvent.searchType=movie
+config.plugins.xtraEvent.timerHour=2
+config.plugins.xtraEvent.timerMod=Period
+config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8
+config.plugins.xtraEvent.tvdb=True
+config.plugins.xtraEvent.tvdbAPI=a99d487bb3426e5f3a60dea6d3d3c7ef
+EOF
+
+# Update Enigma2 settings
+sed -i "/xtraEvent/d" /etc/enigma2/settings
+grep "config.plugins.xtraEvent.*" "$temp_dir/temp_file" >> /etc/enigma2/settings
+rm -rf "$temp_dir/temp_file" >/dev/null 2>&1
+
+sleep 2
+echo "> Setup done..., Please wait enigma2 restarting..."
+sleep 1
+echo "> Uploaded By Ahmed shawky "
+
+# Restart Enigma2 service or kill enigma2 based on the system
+if [ -f /etc/apt/apt.conf ]; then
+    sleep 2
+    systemctl restart enigma2
+else
+    sleep 2
+    killall -9 enigma2
+fi
+else
+echo "> $plugin-$version package installation failed"
+sleep 3
+fi
+    
