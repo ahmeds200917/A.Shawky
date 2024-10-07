@@ -1,5 +1,4 @@
 #!/bin/sh
-##setup command=wget -q "--no-check-certificate" https://github.com/popking159/ssupport/raw/main/subssupport-install.sh -O - | /bin/sh
 
 echo ''
 echo '************************************************************'
@@ -79,7 +78,6 @@ echo "config.plugins.subtitlesSupport.search.subtitles_gr.enabled=False"
 echo "config.plugins.subtitlesSupport.search.subtitlist.enabled=False"
 echo "config.plugins.subtitlesSupport.search.titlovi.enabled=False"
 echo "config.plugins.subtitlesSupport.search.titulky_com.enabled=False"
-
 	
 } >> $SETTINGS
 
