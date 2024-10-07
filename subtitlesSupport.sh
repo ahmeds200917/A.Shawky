@@ -1,10 +1,11 @@
 #!/bin/sh
+##setup command=wget -q "--no-check-certificate" https://github.com/popking159/ssupport/raw/main/subssupport-install.sh -O - | /bin/sh
 
 echo ''
 echo '************************************************************'
 echo "**                       STARTED                          **"
 echo '************************************************************'
-echo "**                  Uploaded by: Ahmed.Shawky    **"
+echo "**                  Uploaded by: Ahmed.Shawky              **"
 echo "************************************************************"
 echo "**                 SubsSupport v1.5.11                  **"
 echo "************************************************************"
@@ -78,6 +79,7 @@ echo "config.plugins.subtitlesSupport.search.subtitles_gr.enabled=False"
 echo "config.plugins.subtitlesSupport.search.subtitlist.enabled=False"
 echo "config.plugins.subtitlesSupport.search.titlovi.enabled=False"
 echo "config.plugins.subtitlesSupport.search.titulky_com.enabled=False"
+
 	
 } >> $SETTINGS
 
