@@ -1,5 +1,15 @@
 #!/bin/sh
-##setup command=wget -q "--no-check-certificate" https://github.com/popking159/ssupport/raw/main/subssupport-install.sh -O - | /bin/sh
+echo ''
+echo '************************************************************'
+echo "**                       STARTED                          **"
+echo '************************************************************'
+echo "**                  Uploaded by: Ahmed Shawky                    **"
+echo "************************************************************"
+echo "**                 SubsSupport v1.5.11                  **"
+echo "************************************************************"
+echo ''
+sleep 3s
+
 if [ -d /usr/lib/enigma2/python/Plugins/Extensions/SubsSupport ]; then
 echo "> removing package please wait..."
 sleep 3s 
@@ -71,5 +81,13 @@ echo "config.plugins.subtitlesSupport.search.titulky_com.enabled=False"
 	
 } >> $SETTINGS
 
-
+# ============================================================================================================
+sleep 2
+sync
+init 3
+echo "==================================================================="
+echo "===                          FINISHED                           ==="
+echo "                         Modded by Ahmed Shawky                        ==="
+echo "==================================================================="
+sleep 2
 exit 0
