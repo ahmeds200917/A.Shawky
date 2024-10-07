@@ -1,15 +1,16 @@
 #!/bin/sh
-##setup command=wget -q "--no-check-certificate" https://github.com/popking159/ssupport/raw/main/subssupport-install.sh -O - | /bin/sh
 
 echo ''
 echo '************************************************************'
 echo "**                       STARTED                          **"
 echo '************************************************************'
+echo "**                  Uploaded by: MNASR                    **"
 echo "************************************************************"
-echo "**                 SubsSupport v1.5.11                  **"
+echo "**                 SubsSupport v1.7.0 r4                  **"
 echo "************************************************************"
 echo ''
 sleep 3s
+
 
 if [ -d /usr/lib/enigma2/python/Plugins/Extensions/SubsSupport ]; then
 echo "> removing package please wait..."
