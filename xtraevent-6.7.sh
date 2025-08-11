@@ -2,7 +2,7 @@
 
 # Configuration
 plugin="xtraevent"
-version="6.7"
+version="6.8"
 targz_file="$plugin-$version.tar.gz"
 package="enigma2-plugin-extensions-xtraevent"
 temp_dir="/tmp"
@@ -121,7 +121,7 @@ config.plugins.xtraEvent.searchMANUELnmbr=0
 config.plugins.xtraEvent.searchNUMBER=8
 config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8
 config.plugins.xtraEvent.searchType=movie
-config.plugins.xtraEvent.timerHour=2
+config.plugins.xtraEvent.timerHour=24
 config.plugins.xtraEvent.timerMod=Period
 config.plugins.xtraEvent.tmdbAPI=c7ca0c239088f1ae72a197d1b4be51b8
 config.plugins.xtraEvent.tvdb=True
