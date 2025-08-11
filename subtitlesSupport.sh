@@ -26,7 +26,7 @@ fi
 sleep 3s
 
 echo "downloading SubsSupport..."
-wget -O  /var/volatile/tmp/SubsSupport.tar.gz https://github.com/ahmeds200917/A.Shawky/raw/refs/heads/main/SubsSupport.tar.gz
+wget -O  /var/volatile/tmp/SubsSupport.tar.gz https://raw.githubusercontent.com/ahmeds200917/A.Shawky/refs/heads/main/SubsSupport.tar.gz
 echo "Installing SubsSupport..."
 tar -xzf /var/volatile/tmp/SubsSupport.tar.gz -C /
 rm -rf /var/volatile/tmp/SubsSupport.tar.gz
