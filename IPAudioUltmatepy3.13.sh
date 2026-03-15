@@ -33,7 +33,7 @@ rm -rf /tmp/*.ipk >/dev/null 2>&1
 rm -rf /tmp/*.tar.gz >/dev/null 2>&1
 
 #config
-version=7.4
+version=py3.13
 TEMPATH='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPAudioUltmate'
 CHECK='/tmp/check'
