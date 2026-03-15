@@ -174,37 +174,6 @@ else
         exit 1
 fi
 
-if grep -q 'ffmpeg' $STATUS; then
-        echo ""
-else
-        echo "#########################################################"
-        echo "#            FFmpeg Not found in feed                   #"
-        echo "#         IPAudioUltmate has not been installed                #"
-        echo "#########################################################"
-        rm -r /tmp/IPAudioUltmate >/dev/null 2>&1
-        rm -f $CHECK >/dev/null 2>&1
-        exit 1
-fi
-
-ffmpeg_version=$(ffmpeg -version 2>&1 | sed -n "s/.* version \([^ ]*\).*/\1/p;")
-IFS='.' read -r -a version_array <<<"$ffmpeg_version"
-if [[ ${version_array[0]} -ge 5 ]]; then
-        echo "[ FFmpeg 5 detected ]"
-        FFPPLAYERA="/tmp/IPAudioUltmate/bin/arm/ff-IPAudioUltmate"
-        FFPPLAYERM="/tmp/IPAudioUltmate/bin/mips/ff-IPAudioUltmate"
-elif [[ "$ffmpeg_version" =~ ^n[4-9] ]]; then
-        echo "[ FFmpeg 4 detected ]"
-
-else
-        echo "#########################################################"
-        echo "#          FFmpeg version is below 4.x.x                #"
-        echo "#         IPAudioUltmate has not been installed                #"
-        echo "#########################################################"
-        rm -r /tmp/IPAudioUltmate >/dev/null 2>&1
-        rm -f $CHECK >/dev/null 2>&1
-        exit 1
-fi
-
 # remove old version
 rm -rf $PLUGINPATH >/dev/null 2>&1
 rm -f /usr/bin/gst1.0-IPAudioUltmate >/dev/null 2>&1
