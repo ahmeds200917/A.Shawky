@@ -1,154 +1,127 @@
 #!/bin/sh
 
-##################################
-version="1.3"
-base_url="https://github.com/Najar1991/MixAudio_All/raw/refs/heads/main"
+# Configuration
+plugin="DVBAudioPRO"
+version="6.8"
+targz_file="$plugin-$version.tar.gz"
+package="enigma2-plugin-extensions-DVBAudioPRO"
+temp_dir="/tmp"
+url="https://raw.githubusercontent.com/ahmeds200917/A.Shawky/refs/heads/main/DVBAudioPRO3.13.tar.gz"
 
-ipkurl_arm_py313="$base_url/MixAudio_arm_py313.ipk"
-ipkurl_mips_py313="$base_url/MixAudio_mipsel_py313.ipk"
-ipkurl_aarch_py313="$base_url/MixAudio_aarch64_py313.ipk"
-
-ipkurl_arm="$base_url/MixAudio_arm.ipk"
-ipkurl_mips="$base_url/MixAudio_mipsel.ipk"
-ipkurl_aarch="$base_url/MixAudio_aarch64.ipk"
-
-echo ""
-echo "MixAudio Installer v$version"
-echo "============================"
-
-if [ "$(id -u)" -ne 0 ]; then
-    echo "Error: Please run as root!"
-    exit 1
-fi
-
-if ! command -v python3 >/dev/null 2>&1; then
-    echo ""
-    echo "Error: Python3 is not installed!"
-    echo "This plugin requires Python 3.13.x or 3.14.x"
-    echo "Please upgrade your image and try again."
-    echo ""
-    exit 1
-fi
-
-PY_FULL=$(python3 -c "import sys; print(sys.version.split()[0])")
-PY_MAJOR_MINOR=$(python3 -c "import sys; print(str(sys.version_info.major) + '.' + str(sys.version_info.minor))")
-
-if [ "$PY_MAJOR_MINOR" != "3.13" ] && [ "$PY_MAJOR_MINOR" != "3.14" ]; then
-    echo ""
-    echo "Error: Unsupported Python version: $PY_FULL"
-    echo "This plugin requires Python 3.13.x or 3.14.x ONLY"
-    echo "The plugin uses compiled .so files for Python 3.13/3.14"
-    echo "Please upgrade your Enigma2 image and try again."
-    echo ""
-    exit 1
-fi
-
-echo "Python $PY_FULL detected (OK)"
-echo ""
-
-echo "Checking for previous MixAudio..."
-if opkg list-installed | grep -q "enigma2-plugin-extensions-mixaudio"; then
-    echo "Previous MixAudio found - removing..."
-    opkg remove enigma2-plugin-extensions-mixaudio --force-depends
-    rm -rf /usr/lib/enigma2/python/Plugins/Extensions/MixAudio
-    echo "Previous version removed"
+# Determine package manager
+if command -v dpkg &> /dev/null; then
+package_manager="apt"
+status_file="/var/lib/dpkg/status"
+uninstall_command="apt-get purge --auto-remove -y"
 else
-    echo "Fresh installation"
+package_manager="opkg"
+status_file="/var/lib/opkg/status"
+uninstall_command="opkg remove --force-depends"
 fi
 
-echo "Updating package list..."
-opkg update > /dev/null 2>&1
+check_and_remove_package() {
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/DVBAudioPRO ]; then
+echo "> removing package old version please wait..."
+sleep 3
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/DVBAudioPRO > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Components/Converter/xtra* > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Components/Renderer/xtra* > /dev/null 2>&1
 
-install_if_missing() {
-    PKG=$1
-    if ! opkg list-installed | grep -q "^$PKG "; then
-        echo "Installing $PKG..."
-        opkg install "$PKG" > /dev/null 2>&1
-    else
-        echo "$PKG already installed"
+if grep -q "$package" "$status_file"; then
+echo "> Removing existing $package package, please wait..."
+$uninstall_command $package
+fi
+echo "*******************************************"
+echo "*             Removed Finished            *"
+echo "*            Uploaded By ahmed shawky          *"
+echo "*******************************************"
+sleep 3
+exit 1
+else
+echo " " 
+fi  }
+check_and_remove_package
+
+#check and install dependencies
+# Check python
+pyVersion=$(python -c"from sys import version_info; print(version_info[0])")
+
+deps=("unrar" "perl-module-io-zlib")
+
+if [ "$pyVersion" = 3 ]; then
+  deps+=( "gstreamer1.0-plugins-base-volume" "python3-pytz" "ffmpeg" "gstreamer1.0" "gstreamer1.0-plugins-base" "gstreamer1.0-plugins-good" "gstreamer1.0-plugins-bad" "gstreamer1.0-plugins-ugly" "gstreamer1.0-libav" "python3-core" "python3-twisted" "alsa-utils" )
+else
+deps+=( "python-codecs" "python-compression" "python-core" "python-difflib" "python-json" "python-requests" "python-xmlrpc" )
+fi
+
+left=">>>>"
+right="<<<<"
+LINE1="---------------------------------------------------------"
+LINE2="-------------------------------------------------------------------------------------"
+
+if [ -f /etc/opkg/opkg.conf ]; then
+  STATUS='/var/lib/opkg/status'
+  OSTYPE='Opensource'
+  OPKG='opkg update'
+  OPKGINSTAL='opkg install'
+elif [ -f /etc/apt/apt.conf ]; then
+  STATUS='/var/lib/dpkg/status'
+  OSTYPE='DreamOS'
+  OPKG='apt-get update'
+  OPKGINSTAL='apt-get install -y'
+fi
+
+install() {
+  if ! grep -qs "Package: $1" "$STATUS"; then
+    $OPKG >/dev/null 2>&1
+    rm -rf /run/opkg.lock
+    echo -e "> Need to install ${left} $1 ${right} please wait..."
+    echo "$LINE2"
+    sleep 0.8
+    echo
+    if [ "$OSTYPE" = "Opensource" ]; then
+      $OPKGINSTAL "$1"
+      sleep 1
+      clear
+    elif [ "$OSTYPE" = "DreamOS" ]; then
+      $OPKGINSTAL "$1" -y
+      sleep 1
+      clear
     fi
+  fi
 }
 
-install_if_missing "ffmpeg"
-install_if_missing "gstreamer1.0"
-install_if_missing "gstreamer1.0-plugins-base"
-install_if_missing "gstreamer1.0-plugins-good"
-install_if_missing "gstreamer1.0-plugins-bad"
-install_if_missing "gstreamer1.0-plugins-ugly"
-install_if_missing "gstreamer1.0-libav"
-install_if_missing "python3-core"
-install_if_missing "python3-twisted"
-install_if_missing "alsa-utils"
+for i in "${deps[@]}"; do
+  install "$i"
+done
 
-ARCH=$(uname -m)
-IPK_FILE=""
-tmp_dir="/tmp/mixaudio-install"
-mkdir -p "$tmp_dir"
-cd "$tmp_dir" || exit 1
+#download & install package
+echo "> Downloading $plugin-$version package  please wait ..."
+sleep 3
+wget --show-progress -qO $temp_dir/$targz_file --no-check-certificate $url
+tar -xzf $temp_dir/$targz_file -C /
+extract=$?
+rm -rf $temp_dir/$targz_file >/dev/null 2>&1
 
-if [ "$PY_MAJOR_MINOR" = "3.13" ]; then
-    
-    if echo "$ARCH" | grep -qi "mips"; then
-        echo "Detected architecture: MIPS (Python 3.13)"
-        IPK_FILE="MixAudio_mipsel_py313.ipk"
-        wget --no-check-certificate -q "$ipkurl_mips_py313" -O "$IPK_FILE"
-    elif echo "$ARCH" | grep -qi "aarch64"; then
-        echo "Detected architecture: aarch64 (Python 3.13)"
-        IPK_FILE="MixAudio_aarch64_py313.ipk"
-        wget --no-check-certificate -q "$ipkurl_aarch_py313" -O "$IPK_FILE"
-    elif echo "$ARCH" | grep -qiE "armv7l|armv8|arm"; then
-        echo "Detected architecture: ARM (Python 3.13)"
-        IPK_FILE="MixAudio_arm_py313.ipk"
-        wget --no-check-certificate -q "$ipkurl_arm_py313" -O "$IPK_FILE"
-    else
-        echo "Unsupported architecture: $ARCH"
-        rm -rf "$tmp_dir"
-        exit 1
-    fi
+echo ''
+if [ $extract -eq 0 ]; then
+echo "> $plugin-$version package installed successfully"
+
+sleep 2
+echo "> Setup done..., Please wait enigma2 restarting..."
+sleep 1
+echo "> Uploaded By Ahmed shawky "
+
+# Restart Enigma2 service or kill enigma2 based on the system
+if [ -f /etc/apt/apt.conf ]; then
+    sleep 2
+    systemctl restart enigma2
 else
-    # Python 3.14 - استخدام الملفات القديمة
-    if echo "$ARCH" | grep -qi "mips"; then
-        echo "Detected architecture: MIPS (Python 3.14)"
-        IPK_FILE="MixAudio_mipsel.ipk"
-        wget --no-check-certificate -q "$ipkurl_mips" -O "$IPK_FILE"
-    elif echo "$ARCH" | grep -qi "aarch64"; then
-        echo "Detected architecture: aarch64 (Python 3.14)"
-        IPK_FILE="MixAudio_aarch64.ipk"
-        wget --no-check-certificate -q "$ipkurl_aarch" -O "$IPK_FILE"
-    elif echo "$ARCH" | grep -qiE "armv7l|armv8|arm"; then
-        echo "Detected architecture: ARM (Python 3.14)"
-        IPK_FILE="MixAudio_arm.ipk"
-        wget --no-check-certificate -q "$ipkurl_arm" -O "$IPK_FILE"
-    else
-        echo "Unsupported architecture: $ARCH"
-        rm -rf "$tmp_dir"
-        exit 1
-    fi
-fi
-
-if [ ! -f "$IPK_FILE" ] || [ ! -s "$IPK_FILE" ]; then
-    echo "Download failed - check your internet connection"
-    rm -rf "$tmp_dir"
-    exit 1
-fi
-
-echo "Installing MixAudio..."
-opkg install --force-overwrite "./$IPK_FILE"
-INSTALL_STATUS=$?
-
-rm -rf "$tmp_dir"
-
-if [ "$INSTALL_STATUS" -eq 0 ]; then
-    echo ""
-    echo "=============================="
-    echo "MixAudio v$version installed successfully!"
-    echo "Restarting Enigma2 in 3 seconds..."
-    echo "=============================="
-    sleep 3
+    sleep 2
     killall -9 enigma2
-else
-    echo "Installation failed"
-    exit 1
 fi
-
-exit 0
+else
+echo "> $plugin-$version package installation failed"
+sleep 3
+fi
+    
