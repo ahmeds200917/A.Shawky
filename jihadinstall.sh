@@ -21,7 +21,7 @@ sleep 2
 
 #
 cd /tmp
-echo "Downloading Aglare-FHD skin package..."
+echo "Downloading Jihad skin package..."
 curl -s -k -L "https://raw.githubusercontent.com/ahmeds200917/A.Shawky/refs/heads/main/enigma2-plugin-skins-jihad_2.10_all.ipk" -o /tmp/enigma2-plugin-skins-jihad_2.10_all.ipk
 if [ $? -ne 0 ]; then
     echo "Error downloading Jihad"
