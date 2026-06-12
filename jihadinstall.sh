@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Command: wget -q "--no-check-certificate" https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-skins-jihad_2.10_all.ipk -O - | /bin/sh #
+# Command: wget -q "--no-check-certificate" https://raw.githubusercontent.com/ahmeds200917/A.Shawky/refs/heads/main/enigma2-plugin-skins-jihad_2.10_all.ipk -O - | /bin/sh #
 echo "------------------------------------------------------------------------"
 echo "              You are going to install jihad                      "
 echo "------------------------------------------------------------------------"
@@ -22,7 +22,7 @@ sleep 2
 #
 cd /tmp
 echo "Downloading Aglare-FHD skin package..."
-curl -s -k -L "https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-skins-jihad_2.10_all.ipk" -o /tmp/enigma2-plugin-skins-jihad_2.10_all.ipk
+curl -s -k -L "https://raw.githubusercontent.com/ahmeds200917/A.Shawky/refs/heads/main/enigma2-plugin-skins-jihad_2.10_all.ipk" -o /tmp/enigma2-plugin-skins-jihad_2.10_all.ipk
 if [ $? -ne 0 ]; then
     echo "Error downloading Jihad"
     exit 1
