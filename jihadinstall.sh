@@ -7,7 +7,7 @@ echo "------------------------------------------------------------------------"
 echo "removing the previous version of Jihad... "
 sleep 2;
 if [ -d /usr/share/enigma2/Jihad] ; then
-   echo "removing the previous version of Jihad... "
+   echo "removing the previous version of enigma2-plugin-skins-jihad... "
     rm -rf /usr/share/enigma2/Jihad> /dev/null 2>&1
     echo 'Package removed.'
 else
