@@ -2,13 +2,13 @@
 #
 # Command: wget -q "--no-check-certificate" https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-skins-jihad_2.10_all.ipk -O - | /bin/sh #
 echo "------------------------------------------------------------------------"
-echo "              You are going to install Jihad                      "
+echo "              You are going to install jihad                      "
 echo "------------------------------------------------------------------------"
 echo "removing the previous version of Jihad... "
 sleep 2;
-if [ -d /usr/share/enigma2/Jihad] ; then
-   echo "removing the previous version of enigma2-plugin-skins-jihad... "
-    rm -rf /usr/share/enigma2/Jihad> /dev/null 2>&1
+if [ -d /usr/share/enigma2/Jihad ] ; then
+    opkg remove enigma2-plugin-skins-jihad
+    rm -rf /usr/share/enigma2/Jihad > /dev/null 2>&1
     echo 'Package removed.'
 else
     echo "You do not have previous version of Jihad"
@@ -21,8 +21,8 @@ sleep 2
 
 #
 cd /tmp
-echo "Downloading Jihadskin package..."
-curl -s -k -L "https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-skins-jihad_2.10_all.ipk" -o /tmp/aglareatv.ipk
+echo "Downloading Aglare-FHD skin package..."
+curl -s -k -L "https://github.com/ahmeds200917/A.Shawky/blob/main/enigma2-plugin-skins-jihad_2.10_all.ipk" -o /tmp/enigma2-plugin-skins-jihad_2.10_all.ipk
 if [ $? -ne 0 ]; then
     echo "Error downloading Jihad"
     exit 1
@@ -50,7 +50,7 @@ echo "Done"
 #
 echo "------------------------------------------------------------------------"
 echo "                            CONGRATULATIONS                             "
-echo "                   JihadInstalled Successfully                    "
+echo "                   Jihad Installed Successfully                    "
 echo "------------------------------------------------------------------------"
 echo "   "
 exit 0
